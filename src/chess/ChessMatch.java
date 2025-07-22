@@ -1,6 +1,8 @@
 package chess;
 
 import BoardGame.Board;
+import BoardGame.Piece;
+import BoardGame.Position;
 import chess.piece.King;
 import chess.piece.Rook;
 
@@ -17,15 +19,36 @@ public class ChessMatch {
 		ChessPeice[][] mat = new ChessPeice[board.getRow()][board.getColumn()];
 		for (int i =0; i< board.getRow(); i++) {
 			for (int j = 0; j<board.getRow(); j++) {
-				mat[i][j] =(ChessPeice) board.piece(i, j);
-						
-						
+				mat[i][j] =(ChessPeice) board.piece(i, j);		
 			}
 		}
 		return mat;
-		
 	}
 	
+	public ChessPeice  perforChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
+		Position source = sourcePosition.toPosition();
+		Position target = targetPosition.toPosition();
+		validateSourcePosition(source);
+		Piece capturedPiece = makeMove(source, target);
+		return (ChessPeice)capturedPiece;
+	}
+	
+	private Piece makeMove(Position source, Position target) {
+		Piece p = board.removePiece(source);
+		Piece capturedPiece = board.removePiece(target);
+		board.placePiece(p, target);
+		return capturedPiece;
+		
+		
+	}
+
+	private void validateSourcePosition(Position position) {
+	 if (!board.thereIsAPiece(position)) {
+		 
+	 }
+		
+	}
+
 	private void  placeNewPice(char column, int row, ChessPeice piece) {
    board.placePiece(piece, new ChessPosition(column, row).toPosition());
 	}
