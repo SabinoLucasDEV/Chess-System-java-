@@ -4,7 +4,7 @@ import BoardGame.Board;
 import chess.ChessPeice;
 import chess.Color;
 
-public class King extends ChessPeice {
+public  class King extends ChessPeice {
 
 	public King(Board board, Color color) {
 		super(board, color);
@@ -14,6 +14,13 @@ public class King extends ChessPeice {
 	@Override
 	public String toString() {
 		return "K";
+	}
+
+	@Override
+	public Boolean[][] possibleMoves() {
+	Boolean[][]  mat  = new Boolean[getBoard().getRow()][getBoard().getColumn()];
+		return mat;
+		
 	}
 
 	
