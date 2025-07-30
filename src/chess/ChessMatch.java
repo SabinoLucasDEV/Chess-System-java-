@@ -8,14 +8,14 @@ import chess.piece.Rook;
 
 public class ChessMatch {
 	
-	private Board board;
+	private static Board board;
 	
 	public ChessMatch() {
 		board = new Board(8, 8);
 		initialSetup();
 	}
 	
-	public ChessPeice[][] getPieces() {
+	public static ChessPeice[][] getPieces() {
 		ChessPeice[][] mat = new ChessPeice[board.getRow()][board.getColumn()];
 		for (int i =0; i< board.getRow(); i++) {
 			for (int j = 0; j<board.getRow(); j++) {
@@ -23,6 +23,12 @@ public class ChessMatch {
 			}
 		}
 		return mat;
+	}
+	
+	public boolean[][] possiblemoves(ChessPosition sourcePosition) {
+		Position position = sourcePosition.toPosition();
+		validateSourcePosition(position);
+		return board.piece(position).possibleMoves();
 	}
 	
 	public ChessPeice  perforChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
