@@ -27,6 +27,9 @@ public class ChessMatch {
 		currentPlayer = Color.WHITE;
 		initialSetup();
 	}
+	public boolean getCheck() {
+		return check;
+	}
 	
 	public int getTurn() {
 		return turn;
@@ -64,6 +67,14 @@ public class ChessMatch {
 		validateSourcePosition(source);
 		validateTargetPosition(source, target);
 		Piece capturedPiece = makeMove(source, target);
+		
+		if (testCheck(currentPlayer)) {
+			undoMove(source, target, capturedPiece);
+		  throw new ChessExcepition("you can't put yourself in CHECK");
+		
+		}
+		check = (testCheck(opponet(currentPlayer))) ? true : false;
+		
 		nextTurn();
 		return (ChessPeice)capturedPiece;
 	}
@@ -132,11 +143,21 @@ public class ChessMatch {
 	private void  placeNewPice(char column, int row, ChessPeice piece) {
    board.placePiece(piece, new ChessPosition(column, row).toPosition());
     pieceOnTheBoard.add(piece);
-    
-   
-   
    
 	}
+	
+	private boolean testCheck(Color color) {
+		Position kingPosition = king(color).getChessPosition().toPosition();
+		List<Piece> opponentPieces = pieceOnTheBoard.stream().filter(x -> ((ChessPeice)x).getColor() == opponet(color)).collect(Collectors.toList());
+		for (Piece p : opponentPieces) {
+			boolean[][] mat = p.possibleMoves();
+			if (mat[kingPosition.getRow()][kingPosition.getColumn()]) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	private void initialSetup() {
 		placeNewPice('c', 1, new Rook(board, Color.WHITE));
         placeNewPice('c', 2, new Rook(board, Color.WHITE));

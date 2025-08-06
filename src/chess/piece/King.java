@@ -12,7 +12,6 @@ public  class King extends ChessPeice {
 		
 	}
 	
-
 	@Override
 	public String toString() {
 		return "K";
